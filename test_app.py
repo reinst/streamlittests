@@ -16,7 +16,7 @@ def main():
         r = requests.get('http://worldtimeapi.org/api/ip')
         data = r.json()
         for i in data:
-            st.write([utc_datetime])
+            st.write(["utc_datetime"])
 
     elif choice == "Limp":
         st.subheader("Calc Limp")
