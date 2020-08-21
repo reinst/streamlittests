@@ -20,8 +20,6 @@ def main():
 
     elif choice == "Limp":
         st.subheader("Calc Limp")
-        if choice == "Simp":
-        st.subheader("Calc Simp")
         r = requests.get('http://worldtimeapi.org/api/ip')
         data = r.json()
         st.write(data)
