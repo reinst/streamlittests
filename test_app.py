@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as stc
 import requests
 
-st.title("Tuts are fun")
+st.title("Gits are fun")
 
 st.success("Successful")
 
