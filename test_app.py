@@ -16,7 +16,7 @@ def main():
 
     if choice == "Issues":
         st.subheader("Issues Center")
-        r = requests.get('http://worldtimeapi.org/api/ip'
+        r = requests.get('http://worldtimeapi.org/api/ip')
         data = r.json()
         time_data = data["utc_datetime"]
         st.write(time_data)
