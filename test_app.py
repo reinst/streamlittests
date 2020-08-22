@@ -14,7 +14,7 @@ def main():
     system = ["Issues", "Systems", "API" ]
     choice = st.sidebar.selectbox("System Check",system)
     firewall = ["firewalls", "pano", "syslog"]
-    choice2 = st.sidebar.
+    choice2 = st.sidebar.markdown("firewall data", firewall)
 
     if choice == "Issues":
         st.subheader("Issues Center")
