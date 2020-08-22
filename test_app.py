@@ -11,14 +11,12 @@ add_selectbox = st.sidebar.selectbox(
                 )
 
 def main():
-    system = ["Issues", "Systems", "API" ]
+    system = ["","Issues", "Systems", "API" ]
     choice = st.sidebar.selectbox("System Check",system)
-    firewall = ["firewalls", "pano", "syslog"]
-    choice2 = st.sidebar.markdown("firewall data", firewall)
 
     if choice == "Issues":
         st.subheader("Issues Center")
-        r = requests.get('http://worldtimeapi.org/api/ip')
+        r = requests.get('http://worldtimeapi.org/api/ip'
         data = r.json()
         time_data = data["utc_datetime"]
         st.write(time_data)
