@@ -5,11 +5,16 @@ import requests
 st.title("Application Data Check")
 
 st.success("Successful")
-
+add_selectbox = st.sidebar.selectbox(
+    "How would you like to be contacted?",
+    ("Email", "Home phone", "Mobile phone")
+                )
 
 def main():
-    menu = ["Issues", "Systems", "API" ]
-    choice = st.sidebar.selectbox("Menu",menu)
+    system = ["Issues", "Systems", "API" ]
+    choice = st.sidebar.selectbox("System Check",system)
+    firewall = ["firewalls", "pano", "syslog"]
+    choice2 = st.sidebar.
 
     if choice == "Issues":
         st.subheader("Issues Center")
