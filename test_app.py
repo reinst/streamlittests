@@ -8,7 +8,7 @@ st.success("Successful")
 
 
 def main():
-    menu = ["Systems", "Issues", "API" ]
+    menu = ["Issues", "Systems", "API" ]
     choice = st.sidebar.selectbox("Menu",menu)
 
     if choice == "Issues":
