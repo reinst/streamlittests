@@ -8,25 +8,25 @@ st.success("Successful")
 
 
 def main():
-    menu = ["Simp", "Limp", "Dimp"]
+    menu = ["Systems", "Issues", "API" ]
     choice = st.sidebar.selectbox("Menu",menu)
 
-    if choice == "Simp":
-        st.subheader("Calc Simp")
+    if choice == "Issues":
+        st.subheader("Issues Center")
         r = requests.get('http://worldtimeapi.org/api/ip')
         data = r.json()
         time_data = data["utc_datetime"]
         st.write(time_data)
 
-    elif choice == "Limp":
-        st.subheader("Calc Limp")
+    elif choice == "Systems":
+        st.subheader("Systems Check")
         r = requests.get('http://worldtimeapi.org/api/ip')
         data = r.json()
         st.write(data)
 
 
     else:
-        st.subheader("Calc Dimp")
+        st.subheader("API Check")
 
 if __name__ == '__main__':
     main()
