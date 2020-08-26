@@ -4,13 +4,8 @@ import requests
 
 st.title("Application Data Check")
 
-st.success("Successful")
-add_selectbox = st.sidebar.selectbox(
-    "How would you like to be contacted?",
-    ("Email", "Home phone", "Mobile phone")
-                )
-
 def main():
+    st.sidebar.subheader("Tool checker")
     system = ["","Issues", "Systems", "API" ]
     choice = st.sidebar.selectbox("System Check",system)
 
@@ -29,7 +24,10 @@ def main():
 
 
     else:
-        st.subheader("API Check")
+        st.subheader("Please select check on left screen drop down")
+        st.success("System Operational")
+
+    st.sidebar.markdown("---")
 
 if __name__ == '__main__':
     main()
