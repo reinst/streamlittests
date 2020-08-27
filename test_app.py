@@ -1,33 +1,56 @@
 import streamlit as st
 import streamlit.components.v1 as stc
 import requests
+import paramiko
 
 st.title("Application Data Check")
+dataCenter = [ "CTC", "ELR" ]
+defaultDataCenter = 'ctc'
+choice1 = st.sidebar.selectbox("Select Data Center",dataCenter, key='1111')
+if choice1 == "ELR":
+    defaultDataCenter = 'elr'
+
+serverType = [ "GDA","CM", "LDA" ]
+defaultServerType = 'gda'
+choice2 = st.sidebar.selectbox("Select Server Type",serverType, key='2222')
+if choice2 == "CM":
+    defaultServerType = 'cm'
+elif choice2 == "LDA":
+    defaultServerType = 'lda'
+
+
+def sshConnection(nixCommand):
+    formatHostname = f"soa-{defaultDataCenter}-{defaultServerType}.uhc.com" 
+    st.write(formatHostname)
+
+    try:
+        client = paramiko.SSHClient()
+        client.load_system_host_keys() # this loads any local ssh keys
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname='192.168.1.88', username='t', password='/home/t/.ssh/id_rsa')
+        _, ss_stdout, ss_stderr = client.exec_command(nixCommand)
+        r_out = ss_stdout.readlines()
+        st.write(r_out)
+        client.close()
+        st.success("Command Executed")
+    except:
+        st.write("Connection Error")
+        st.warning("Error")
 
 def main():
-    st.sidebar.subheader("Tool checker")
-    system = ["","Issues", "Systems", "API" ]
-    choice = st.sidebar.selectbox("System Check",system)
+    systemCheck = ["","Auth", "Syslog" ]
+    choice3 = st.sidebar.selectbox("Log Checks",systemCheck, key='3333')
+    systemAPI = ["","Alarms", "Updates" ]
+    choice4 = st.sidebar.selectbox("API Checks",systemAPI, key='4444')
 
-    if choice == "Issues":
-        st.subheader("Issues Center")
-        r = requests.get('http://worldtimeapi.org/api/ip')
-        data = r.json()
-        time_data = data["utc_datetime"]
-        st.write(time_data)
+    if choice3 == "Syslog":
+        st.subheader("Syslog check")
+        sshConnection('tail -n 10 /var/log/syslog')
 
-    elif choice == "Systems":
-        st.subheader("Systems Check")
-        r = requests.get('http://worldtimeapi.org/api/ip')
-        data = r.json()
-        st.write(data)
+    if choice4 == "Auth":
+        st.subheader("Accepted publickey check")
+        sshConnection('grep "Accepted publickey" /var/log/auth.log')
 
-
-    else:
-        st.subheader("Please select check on left screen drop down")
-        st.success("System Operational")
-
-    st.sidebar.markdown("---")
 
 if __name__ == '__main__':
     main()
