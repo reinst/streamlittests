@@ -47,7 +47,7 @@ def main():
         st.subheader("Syslog check")
         sshConnection('tail -n 10 /var/log/syslog')
 
-    if choice4 == "Auth":
+    if choice3 == "Auth":
         st.subheader("Accepted publickey check")
         sshConnection('grep "Accepted publickey" /var/log/auth.log')
 
