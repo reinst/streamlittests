@@ -7,10 +7,9 @@ import paramiko
 st.title("Application Data Check")
 
 def sshConnection(nixCommand): 
-    formatHostname = f"Connecting to [ soa-{options1}-{options2}.uhc.com ]" 
+    formatHostname = f"Connected to: soa-{options1}-{options2}.uhc.com " 
     if sentence:
         st.write(f'Using custom search [ {sentence} ]')
-    st.write(formatHostname)
 
     try:
         client = paramiko.SSHClient()
@@ -20,7 +19,7 @@ def sshConnection(nixCommand):
         _, ss_stdout, ss_stderr = client.exec_command(nixCommand)
         r_out, r_err = ss_stdout.readlines(), ss_stderr.read()
         if len(r_err) < 5:
-            st.success('Connection Succesful')
+            st.success(formatHostname)
             st.write(r_out)
         else:
             st.error('Stderr returned')
@@ -53,11 +52,17 @@ def main():
 
     if choice3 == "Syslog":
         st.subheader("Check Type: Syslog")
-        sshConnection('tail -n 10 /var/log/syslog')
+        if sentence:
+            sshConnection(sentence)
+        else:
+            sshConnection('tail -n 10 /var/log/syslog')
 
     if choice3 == "Auth":
         st.subheader("Check Type: Authentication")
-        sshConnection('grep "Accepted publickey" /var/log/auth.log')
+        if sentence:
+            sshConnection(sentence)
+        else:
+            sshConnection('grep "Accepted publickey" /var/log/auth.log')
 
 if __name__ == '__main__':
     main()
