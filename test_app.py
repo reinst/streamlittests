@@ -8,25 +8,32 @@ st.title("Application Data Check")
 
 def sshConnection(nixCommand): 
     formatHostname = f"Connecting to [ soa-{options1}-{options2}.uhc.com ]" 
+    if sentence:
+        st.write(f'Using custom search [ {sentence} ]')
     st.write(formatHostname)
 
     try:
         client = paramiko.SSHClient()
         client.load_system_host_keys() # this loads any local ssh keys #BEST to add specific host keys
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(hostname='192.168.31.88', username='t', password='/home/t/.ssh/id_rsa', timeout=10)
+        client.connect(hostname='192.168.1.88', username='t', password='/home/t/.ssh/id_rsa', timeout=10)
         _, ss_stdout, ss_stderr = client.exec_command(nixCommand)
-        r_out = ss_stdout.readlines()
-        st.write(r_out)
+        r_out, r_err = ss_stdout.readlines(), ss_stderr.read()
+        if len(r_err) < 5:
+            st.success('Connection Succesful')
+            st.write(r_out)
+        else:
+            st.error('Stderr returned')
         client.close()
-        st.success("Command Executed")
     except:
-        st.write("Connection Error...")
-        st.warning("SSH Timeout, check connection or DNS")
+        st.write("Code Exception Error...")
+        st.warning("Bad code, SSH Timeout, check connection, or DNS issue")
 
 def main():
     global options1
     global options2
+    global sentence
+
     systemCheck = ["","Auth", "Syslog" ]
     choice3 = st.sidebar.selectbox("Log Checks",systemCheck, key='3333')
     systemAPI = ["","Alarms", "Updates" ]
@@ -35,15 +42,22 @@ def main():
     # pick server
     options1 = st.selectbox('pick server type',('cm', 'lda', 'gda'))
     options2 = st.selectbox('pick server location',('ctc','elr'))
+    
+    sentence = st.text_input('Enter custum bash command: ') 
+    
+    if st.button('run'):
+        st.write('')
+    else:
+        st.write('Click to Run')
+        st.stop()
 
     if choice3 == "Syslog":
-        st.subheader("Syslog check")
+        st.subheader("Check Type: Syslog")
         sshConnection('tail -n 10 /var/log/syslog')
 
     if choice3 == "Auth":
-        st.subheader("Accepted publickey check")
+        st.subheader("Check Type: Authentication")
         sshConnection('grep "Accepted publickey" /var/log/auth.log')
-
 
 if __name__ == '__main__':
     main()
