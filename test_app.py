@@ -9,8 +9,9 @@ st.title("Application Data Check")
 def sshConnection(nixCommand): 
     formatHostname = f"Connected to: soa-{options1}-{options2}.uhc.com " 
     if sentence:
-        st.write(f'Using custom search [ {sentence} ]')
-
+        st.write(f'Custom shell search [ {sentence} ]')
+    else:
+        st.write(f'Shell search: [ {nixCommand} ]')
     try:
         client = paramiko.SSHClient()
         client.load_system_host_keys() # this loads any local ssh keys #BEST to add specific host keys
