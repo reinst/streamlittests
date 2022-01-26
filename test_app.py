@@ -13,7 +13,7 @@ def getConfigData(section,element):
 
 
 def sshConnection(nixCommand): 
-    formatHostname = f"Connected to: soa-{options1}-{options2}.uhc.com" 
+    formatHostname = f"Connected to: soa-{options1}-{options2}.com" 
     connHost = '192.168.1.88'
     if customSearch:
         st.write(f'Custom shell search [ {customSearch} ]')
